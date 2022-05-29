@@ -27,14 +27,15 @@
 # SOFTWARE.
 # ____________________________________________________________________
 #
+import re
+
 from TrStatusFilter import TrStatusFilter
+
+RE_BLENDER_PROGRESS = re.compile("Rendered ([0-9]+\/[0-9]+) Tiles")
 
 
 def extract_blender_progress(line):
-    import re
-
-    tiles = re.compile("Rendered ([0-9]+\/[0-9]+) Tiles")
-    result = tiles.search(line)
+    result = RE_BLENDER_PROGRESS.search(line)
 
     if result:
         ratio = result.group(1)

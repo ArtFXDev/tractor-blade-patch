@@ -55,18 +55,17 @@ Add a firewall rule to open the `9005` port needed to communicate with the Tract
   ```
 
   ```python
+  RE_BLENDER_PROGRESS = re.compile("Rendered ([0-9]+\/[0-9]+) Tiles")
+
   def extract_blender_progress(line):
-    import re
+      result = RE_BLENDER_PROGRESS.search(line)
 
-    tiles = re.compile("Rendered ([0-9]+\/[0-9]+) Tiles")
-    result = tiles.search(line)
+      if result:
+          ratio = result.group(1)
+          rendered, total = ratio.split("/")
+          return 100 * float(rendered) / float(total)
 
-    if result:
-        ratio = result.group(1)
-        rendered, total = ratio.split("/")
-        return 100 * float(rendered) / float(total)
-
-    return None
+      return None
   ```
 
 ### `blade/TrBladeMain.py`
